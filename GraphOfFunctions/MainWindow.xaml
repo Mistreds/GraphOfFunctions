@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GraphOfFunctions"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800"
+        Title="Исследование функции" Height="450" Width="800"
           xmlns:ViewModel="clr-namespace:GraphOfFunctions.ViewModel"
          d:DataContext="{d:DesignInstance Type=ViewModel:MainViewModel}">
     
@@ -17,10 +17,15 @@
         <StackPanel Orientation="Horizontal">
             <TextBlock  Margin="3,0,0,0" FontSize="15" Text="Введите интервал" VerticalAlignment="Center"></TextBlock>
             <TextBlock VerticalAlignment="Center" FontSize="15"   Margin="5,0,0,0">от</TextBlock>
-            <TextBox VerticalAlignment="Center" FontSize="15" Width="30" Margin="5,0,0,0" Height="25"/>
+            <TextBox Text="{Binding start_x}" VerticalAlignment="Center" FontSize="15" Width="30" Margin="5,0,0,0" Height="25"/>
             <TextBlock  VerticalAlignment="Center" FontSize="15"  Margin="5,0,0,0">до</TextBlock>
-            <TextBox VerticalAlignment="Center" FontSize="15" Width="30" Margin="5,0,0,0" Height="25"/>
-            <Button Height="25" Width="75" Margin="15,0,0,0" Content="Построить"></Button>
+            <TextBox Text="{Binding end_x}" VerticalAlignment="Center" FontSize="15" Width="30" Margin="5,0,0,0" Height="25"/>
+            <Button Height="25" Width="75" Margin="15,0,0,0" Content="Построить" Command="{Binding  CreateGraph}"></Button>
+            <Button Height="25" Width="75" Margin="15,0,0,0" Content="Очистить" Command="{Binding  ClearGraph}"></Button>
+            <StackPanel Margin="5,0,0,0" VerticalAlignment="Center">
+                <TextBlock   Text="{Binding GraphModel.MinPoint, UpdateSourceTrigger=PropertyChanged}"></TextBlock>
+                <TextBlock   Text="{Binding GraphModel.MaxPoint, UpdateSourceTrigger=PropertyChanged}"></TextBlock>
+            </StackPanel>
         </StackPanel>
         <ContentControl Grid.Row="1" Content="{Binding MainControl}"></ContentControl>
     </Grid>

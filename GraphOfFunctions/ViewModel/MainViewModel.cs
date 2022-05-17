@@ -1,7 +1,9 @@
 ﻿using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
@@ -12,40 +14,25 @@ namespace GraphOfFunctions.ViewModel
     {
         private View.FuncGraph FuncGraph { get; set; }   
 
-        public UserControl MainControl { get; set; }    
+        public UserControl MainControl { get; set; }
+        [Reactive]
+        public Model.GraphModel GraphModel { get; set; }
+        [Reactive]
+        public int start_x { get; set; }
+        [Reactive]
+        public int end_x { get; set; }    
 
         public MainViewModel()
         {
             FuncGraph=new View.FuncGraph();
             FuncGraph.DataContext=this;
             MainControl=FuncGraph;
-            CreacteGraphTest();
-        }
-      private void CreacteGraphTest()
-        {
-            double x = -10;
-            double x2 = 10;
-            for(double i =x;i<=x2;i++)
-            {
-                double y= sqrt(Math.Pow(i, 2)* Math.Cos(i)+2);
-                Console.WriteLine(y);
-                FuncGraph.chart.Series[0].Points.AddXY(i, y);
-            }
-            //double y = Math.Sqrt(Math.Pow(x,2)* Math.Cos(x)+2);
+            GraphModel=new Model.GraphModel(FuncGraph.chart);
+            start_x=-10;
+            end_x=10;
             
         }
-        private double sqrt(double x)
-        {
-            if(x<0)
-            {
-                x=Math.Sqrt(-x);
-                x=0-x;
-            }
-            else
-            {
-                x=Math.Sqrt(x);
-            }
-            return x;
-        }
+        public ReactiveCommand<Unit, Unit> CreateGraph => ReactiveCommand.Create(() => { GraphModel.CreateFunctGraph(start_x, end_x); });
+        public ReactiveCommand<Unit, Unit> ClearGraph => ReactiveCommand.Create(GraphModel.ClearGraph);
     }
 }
